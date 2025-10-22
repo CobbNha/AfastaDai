@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="pt">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Afasta Daí — Registo de Pessoas</title>
+  <style>
+    :root{
+      --blue:#1e3a8a;
+      --light-blue:#3b82f6;
+      --black:#0f172a;
+      --white:#ffffff;
+      --gray:#e5e7eb;
+    }
+    body{
+      font-family:'Poppins',system-ui,-apple-system,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;
+      background:linear-gradient(180deg,var(--blue) 0%, var(--black) 100%);
+      margin:0;
+      padding:0;
+      color:var(--white);
+      min-height:100vh;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+    }
+    header{
+      text-align:center;
+      padding:32px 16px 16px 16px;
+    }
+    header h1{
+      font-size:2.2rem;
+      font-weight:700;
+      letter-spacing:1px;
+      margin:0;
+      color:var(--white);
+    }
+    .container{
+      background:var(--white);
+      color:var(--black);
+      border-radius:16px;
+      box-shadow:0 10px 30px rgba(0,0,0,0.3);
+      max-width:900px;
+      width:90%;
+      margin:20px auto 40px;
+      padding:24px;
+    }
+    .card{margin-bottom:24px;}
+    .card h2{color:var(--blue);margin-bottom:10px}
+    label{font-size:14px;font-weight:500;display:block;margin-bottom:6px;color:var(--black)}
+    input,select,textarea{
+      width:100%;
+      padding:10px;
+      border:1px solid var(--gray);
+      border-radius:8px;
+      font-size:15px;
+      margin-bottom:14px;
+    }
+    button{
+      background:var(--light-blue);
+      color:var(--white);
+      border:0;
+      padding:12px 16px;
+      border-radius:8px;
+      font-size:15px;
+      font-weight:600;
+      cursor:pointer;
+      transition:background 0.3s;
+    }
+    button:hover{background:#2563eb}
+    button.ghost{background:transparent;color:var(--blue);border:1px solid var(--blue)}
+    .msg{
+      background:#d1fae5;
+      color:#065f46;
+      border:1px solid #a7f3d0;
+      border-radius:8px;
+      padding:10px;
+      margin-top:12px;
+    }
+    .hidden{display:none}
+    .whatsapp-link{text-align:center;margin-top:20px}
+    .whatsapp-link a{color:#25D366;text-decoration:none;font-weight:600;font-size:16px}
+    table{width:100%;border-collapse:collapse;margin-top:16px}
+    th,td{border:1px solid #ccc;padding:8px;text-align:left}
+    th{background-color:var(--light-blue);color:white}
+    tr:nth-child(even){background-color:#f9fafb}
+  </style>
+</head>
+<body>
+  <header>
+    <h1>🎉 Afasta Daí — Registo de Pessoas 🎉</h1>
+  </header>
+  <div class="container">
+    <div class="card" id="loginCard">
+      <h2>Acesso de Administrador</h2>
+      <p>Introduza o código de administrador para gerir a lista.</p>
+      <input id="adminCode" type="password" placeholder="Código de acesso" />
+      <button id="enterAdmin">Entrar</button>
+    </div>
+
+    <div class="card" id="formCard">
+      <h2>Formulário de Inscrição — Evento Matola Witbank</h2>
+      <form id="personForm">
+        <label>Nome</label>
+        <input id="name" required placeholder="Ex: João Manuel" />
+        <label>Género</label>
+        <select id="gender">
+          <option value="M">Masculino</option>
+          <option value="F">Feminino</option>
+          <option value="O">Outro</option>
+        </select>
+        <label>Número</label>
+        <input id="phone" required placeholder="351912345678" />
+        <label>Morada</label>
+        <textarea id="address" placeholder="Rua, bairro, cidade..."></textarea>
+        <button type="submit">Enviar</button>
+      </form>
+      <div id="successMsg" class="msg hidden"></div>
+      <div class="whatsapp-link">
+        <p>📞 Para mais informações, contacte-nos no <a href="https://wa.me/258867716179" target="_blank">WhatsApp</a>.</p>
+      </div>
+    </div>
+
+    <div class="card hidden" id="adminPanel">
+      <h2>Painel do Administrador</h2>
+      <div style="margin-bottom:12px;display:flex;gap:8px;flex-wrap:wrap">
+        <button id="exportExcel">Exportar Excel</button>
+        <button id="exportPDF" class="ghost">Exportar PDF</button>
+        <button id="clearList" class="ghost">Limpar Lista</button>
+      </div>
+      <table id="peopleTable">
+        <thead><tr><th>Nome</th><th>Género</th><th>Telefone</th><th>Morada</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+  <script>
+    const ADMIN_PASSWORD = '20252025';
+    const people = JSON.parse(localStorage.getItem('peopleList') || '[]');
+
+    const loginCard = document.getElementById('loginCard');
+    const adminPanel = document.getElementById('adminPanel');
+    const formCard = document.getElementById('formCard');
+    const form = document.getElementById('personForm');
+    const successMsg = document.getElementById('successMsg');
+
+    document.getElementById('enterAdmin').addEventListener('click', ()=>{
+      const code = document.getElementById('adminCode').value.trim();
+      if(code === ADMIN_PASSWORD){
+        loginCard.classList.add('hidden');
+        adminPanel.classList.remove('hidden');
+        renderList();
+      } else {
+        alert('Código incorreto!');
+      }
+    });
+
+    form.addEventListener('submit', e=>{
+      e.preventDefault();
+      const p = {
+        name: document.getElementById('name').value.trim(),
+        gender: document.getElementById('gender').value,
+        phone: document.getElementById('phone').value.trim(),
+        address: document.getElementById('address').value.trim()
+      };
+      if(!p.name || !p.phone) return alert('Preencha nome e número.');
+      people.push(p);
+      localStorage.setItem('peopleList', JSON.stringify(people));
+      form.reset();
+      successMsg.textContent = 'Nome na lista enviado com sucesso e até o dia do evento, não esqueça do local: Matola Witbank, Paragem Farmácia, na Rua da Padaria.';
+      successMsg.classList.remove('hidden');
+      setTimeout(()=>successMsg.classList.add('hidden'),6000);
+    });
+
+    function renderList(){
+      const tbody = document.querySelector('#peopleTable tbody');
+      tbody.innerHTML = '';
+      people.forEach(p=>{
+        const tr = document.createElement('tr');
+        tr.innerHTML = `<td>${p.name}</td><td>${p.gender}</td><td>${p.phone}</td><td>${p.address}</td>`;
+        tbody.appendChild(tr);
+      });
+    }
+
+    document.getElementById('clearList').addEventListener('click',()=>{
+      if(confirm('Apagar todos os registos?')){
+        people.length = 0;
+        localStorage.removeItem('peopleList');
+        renderList();
+      }
+    });
+
+    document.getElementById('exportExcel').addEventListener('click',()=>{
+      if(!people.length) return alert('Sem registos');
+      const ws = XLSX.utils.json_to_sheet(people);
+      const wb = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws, 'Registos');
+      XLSX.writeFile(wb, 'registos.xlsx');
+    });
+
+    document.getElementById('exportPDF').addEventListener('click', async ()=>{
+      if(!people.length) return alert('Sem registos');
+      const table = document.getElementById('peopleTable');
+      const canvas = await html2canvas(table);
+      const imgData = canvas.toDataURL('image/png');
+      const { jsPDF } = window.jspdf;
+      const pdf = new jsPDF('p','pt','a4');
+      const w = pdf.internal.pageSize.getWidth();
+      const h = canvas.height * w / canvas.width;
+      pdf.addImage(imgData,'PNG',0,0,w,h);
+      pdf.save('registos.pdf');
+    });
+  </script>
+</body>
+</html>

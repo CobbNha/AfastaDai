@@ -3,103 +3,40 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Afasta Daí — Nome na lista 2025</title>
+  <title>Afasta Daí — Registo de Pessoas</title>
   <style>
-    :root{
-      --blue:#1e3a8a;
-      --light-blue:#3b82f6;
-      --black:#0f172a;
-      --white:#ffffff;
-      --gray:#e5e7eb;
-    }
-    body{
-      font-family:'Poppins',system-ui,-apple-system,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;
-      background:linear-gradient(180deg,var(--blue) 0%, var(--black) 100%);
-      margin:0;
-      padding:0;
-      color:var(--white);
-      min-height:100vh;
-      display:flex;
-      flex-direction:column;
-      align-items:center;
-    }
-    header{
-      text-align:center;
-      padding:32px 16px 16px 16px;
-    }
-    header h1{
-      font-size:2.2rem;
-      font-weight:700;
-      letter-spacing:1px;
-      margin:0;
-      color:var(--white);
-    }
-    .container{
-      background:var(--white);
-      color:var(--black);
-      border-radius:16px;
-      box-shadow:0 10px 30px rgba(0,0,0,0.3);
-      max-width:900px;
-      width:90%;
-      margin:20px auto 40px;
-      padding:24px;
-    }
-    .card{margin-bottom:24px;}
-    .card h2{color:var(--blue);margin-bottom:10px}
-    label{font-size:14px;font-weight:500;display:block;margin-bottom:6px;color:var(--black)}
-    input,select,textarea{
-      width:100%;
-      padding:10px;
-      border:1px solid var(--gray);
-      border-radius:8px;
-      font-size:15px;
-      margin-bottom:14px;
-    }
-    button{
-      background:var(--light-blue);
-      color:var(--white);
-      border:0;
-      padding:12px 16px;
-      border-radius:8px;
-      font-size:15px;
-      font-weight:600;
-      cursor:pointer;
-      transition:background 0.3s;
-    }
-    button:hover{background:#2563eb}
-    button.ghost{background:transparent;color:var(--blue);border:1px solid var(--blue)}
-    .msg{
-      background:#d1fae5;
-      color:#065f46;
-      border:1px solid #a7f3d0;
-      border-radius:8px;
-      padding:10px;
-      margin-top:12px;
-    }
+    :root{--bg:#f6f8fb;--card:#ffffff;--accent:#2563eb;--muted:#6b7280;--text:#111827;--black:#000000}
+    body{font-family:Inter,system-ui,-apple-system,'Segoe UI',Roboto,'Helvetica Neue',Arial;background:var(--bg);margin:0;padding:24px;color:var(--text)}
+    .container{max-width:980px;margin:0 auto;padding-bottom:60px}
+    .card{background:var(--card);border-radius:12px;box-shadow:0 6px 18px rgba(15,23,42,0.06);padding:18px;margin-bottom:16px}
+    h1{margin:0 0 8px;font-size:22px;color:var(--black);text-align:center}
+    label{font-size:13px;color:var(--muted);display:block;margin-bottom:6px}
+    input,select,textarea{width:100%;padding:10px;border:1px solid #e6e9ef;border-radius:8px;font-size:14px}
+    textarea{resize:vertical;min-height:68px}
+    button{background:var(--accent);color:white;border:0;padding:10px 12px;border-radius:8px;cursor:pointer;transition:all .2s}
+    button:hover{opacity:.9}
+    button.ghost{background:transparent;color:var(--accent);border:1px solid #dbe6ff}
     .hidden{display:none}
-    .whatsapp-link{text-align:center;margin-top:20px}
-    .whatsapp-link a{color:#25D366;text-decoration:none;font-weight:600;font-size:16px}
-    table{width:100%;border-collapse:collapse;margin-top:16px}
-    th,td{border:1px solid #ccc;padding:8px;text-align:left}
-    th{background-color:var(--light-blue);color:white}
-    tr:nth-child(even){background-color:#f9fafb}
+    .msg{background:#e0ffe4;color:#065f46;border:1px solid #baf2c0;border-radius:8px;padding:10px;margin-top:12px;text-align:center}
+    #whatsappBtn{background:#25d366;margin-top:8px}
+    footer{position:fixed;bottom:0;left:0;width:100%;background:var(--accent);color:white;text-align:center;padding:14px 0;font-weight:500;font-size:15px;cursor:pointer;transition:background .2s}
+    footer:hover{background:#1d4ed8}
   </style>
 </head>
 <body>
-  <header>
-    <h1>🎉 Afasta Daí — Nome na Lista 🎉</h1>
-  </header>
   <div class="container">
     <div class="card" id="loginCard">
-      <input id="adminCode" type="password" placeholder="" />
-      <button id="enterAdmin"> Preenche 👇</button>
+      <h1>Acesso de Administrador</h1>
+      <p>Introduza o código de administrador para gerir a lista.</p>
+      <input id="adminCode" type="password" placeholder="Código de acesso" />
+      <button id="enterAdmin">Entrar</button>
     </div>
 
     <div class="card" id="formCard">
-      <h2>Preenche o Formulário — Evento Matola Witbank</h2>
+      <h1>Formulário de Inscrição — Evento Matola Witbank</h1>
       <form id="personForm">
         <label>Nome</label>
-        <input id="name" required placeholder="Ex: Ghost Friend`s" />
+        <input id="name" required placeholder="Ex: João Manuel" />
         <label>Género</label>
         <select id="gender">
           <option value="M">Masculino</option>
@@ -107,30 +44,34 @@
           <option value="O">Outro</option>
         </select>
         <label>Número</label>
-        <input id="phone" required placeholder="Ex: 867716179" />
+        <input id="phone" required placeholder="84xxxxxxx" />
         <label>Morada</label>
         <textarea id="address" placeholder="Rua, bairro, cidade..."></textarea>
         <button type="submit">Enviar</button>
       </form>
       <div id="successMsg" class="msg hidden"></div>
-      <div class="whatsapp-link">
-        <p>📞 Para mais informações, contacte-nos no <a href="https://wa.me/258867716179" target="_blank">WhatsApp</a>.</p>
-      </div>
+      <button id="whatsappBtn" class="hidden">Enviar confirmação pelo WhatsApp</button>
     </div>
 
     <div class="card hidden" id="adminPanel">
-      <h2>Painel do Administrador</h2>
+      <h1>Painel do Administrador</h1>
       <div style="margin-bottom:12px;display:flex;gap:8px;flex-wrap:wrap">
         <button id="exportExcel">Exportar Excel</button>
         <button id="exportPDF" class="ghost">Exportar PDF</button>
         <button id="clearList" class="ghost">Limpar Lista</button>
       </div>
-      <table id="peopleTable">
+      <table id="peopleTable" style="width:100%;border-collapse:collapse">
         <thead><tr><th>Nome</th><th>Género</th><th>Telefone</th><th>Morada</th></tr></thead>
         <tbody></tbody>
       </table>
     </div>
   </div>
+
+  <footer id="contactOrganizer">💬 Falar com o organizador no WhatsApp</footer>
+
+  <!-- Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-database-compat.js"></script>
 
   <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -138,6 +79,20 @@
 
   <script>
     const ADMIN_PASSWORD = '20252025';
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyBE_jjuFipcMX6OJt4LjsS7keBBy-q3wNI",
+      authDomain: "afastadai-evento.firebaseapp.com",
+      projectId: "afastadai-evento",
+      storageBucket: "afastadai-evento.firebasestorage.app",
+      messagingSenderId: "1096291680045",
+      appId: "1:1096291680045:web:b401886adc094486d41da4",
+      databaseURL: "https://afastadai-evento-default-rtdb.europe-west1.firebasedatabase.app/"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+
     const people = JSON.parse(localStorage.getItem('peopleList') || '[]');
 
     const loginCard = document.getElementById('loginCard');
@@ -145,6 +100,7 @@
     const formCard = document.getElementById('formCard');
     const form = document.getElementById('personForm');
     const successMsg = document.getElementById('successMsg');
+    const whatsappBtn = document.getElementById('whatsappBtn');
 
     document.getElementById('enterAdmin').addEventListener('click', ()=>{
       const code = document.getElementById('adminCode').value.trim();
@@ -152,8 +108,9 @@
         loginCard.classList.add('hidden');
         adminPanel.classList.remove('hidden');
         renderList();
+        listenRealtime();
       } else {
-        alert('Ignore esse Campo!');
+        alert('Código incorreto!');
       }
     });
 
@@ -166,26 +123,50 @@
         address: document.getElementById('address').value.trim()
       };
       if(!p.name || !p.phone) return alert('Preencha nome e número.');
+
+      const newRef = db.ref('registos').push();
+      newRef.set(p).catch(()=>console.warn('Falha no Firebase, a guardar local.'));
       people.push(p);
       localStorage.setItem('peopleList', JSON.stringify(people));
-      form.reset();
+
       successMsg.textContent = 'Nome na lista enviado com sucesso e até o dia do evento, não esqueça do local: Matola Witbank, Paragem Farmácia, na Rua da Padaria.';
       successMsg.classList.remove('hidden');
-      setTimeout(()=>successMsg.classList.add('hidden'),6000);
+      whatsappBtn.classList.remove('hidden');
+
+      const mensagem = encodeURIComponent(`👋 Olá! Acabei de me inscrever no evento Afasta Daí.%0A• Nome: ${p.name}%0A• Número: ${p.phone}%0A• Morada: ${p.address}`);
+      const link = `https://wa.me/258867716179?text=${mensagem}`;
+
+      whatsappBtn.onclick = ()=>window.open(link, '_blank');
+
+      form.reset();
+      setTimeout(()=>{
+        successMsg.classList.add('hidden');
+        whatsappBtn.classList.add('hidden');
+      },30000); // 30 segundos
     });
 
-    function renderList(){
+    function renderList(data){
       const tbody = document.querySelector('#peopleTable tbody');
       tbody.innerHTML = '';
-      people.forEach(p=>{
+      const list = data || people;
+      list.forEach(p=>{
         const tr = document.createElement('tr');
         tr.innerHTML = `<td>${p.name}</td><td>${p.gender}</td><td>${p.phone}</td><td>${p.address}</td>`;
         tbody.appendChild(tr);
       });
     }
 
+    function listenRealtime(){
+      db.ref('registos').on('value', snapshot => {
+        const data = snapshot.val() || {};
+        const arr = Object.values(data);
+        renderList(arr);
+      });
+    }
+
     document.getElementById('clearList').addEventListener('click',()=>{
       if(confirm('Apagar todos os registos?')){
+        db.ref('registos').remove();
         people.length = 0;
         localStorage.removeItem('peopleList');
         renderList();
@@ -193,15 +174,17 @@
     });
 
     document.getElementById('exportExcel').addEventListener('click',()=>{
-      if(!people.length) return alert('Sem registos');
-      const ws = XLSX.utils.json_to_sheet(people);
-      const wb = XLSX.utils.book_new();
-      XLSX.utils.book_append_sheet(wb, ws, 'Registos');
-      XLSX.writeFile(wb, 'registos.xlsx');
+      db.ref('registos').once('value').then(snapshot=>{
+        const data = Object.values(snapshot.val() || {});
+        if(!data.length) return alert('Sem registos');
+        const ws = XLSX.utils.json_to_sheet(data);
+        const wb = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, ws, 'Registos');
+        XLSX.writeFile(wb, 'registos.xlsx');
+      });
     });
 
     document.getElementById('exportPDF').addEventListener('click', async ()=>{
-      if(!people.length) return alert('Sem registos');
       const table = document.getElementById('peopleTable');
       const canvas = await html2canvas(table);
       const imgData = canvas.toDataURL('image/png');
@@ -212,8 +195,15 @@
       pdf.addImage(imgData,'PNG',0,0,w,h);
       pdf.save('registos.pdf');
     });
+
+    // Rodapé — contato WhatsApp
+    document.getElementById('contactOrganizer').addEventListener('click', ()=>{
+      window.open('https://wa.me/258867716179?text=Olá! Gostaria de mais informações sobre o evento Afasta Daí.', '_blank');
+    });
   </script>
 </body>
 </html>
+
+
 
 
